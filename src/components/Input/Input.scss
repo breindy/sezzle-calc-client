@@ -1,0 +1,6 @@
+@import '../../styles/mixins';
+
+.input {
+	@include defaultEltStyle(flex-end, bold, #000000, 10px);
+	overflow: hidden;
+}

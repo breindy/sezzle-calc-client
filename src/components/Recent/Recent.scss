@@ -1,0 +1,14 @@
+@import '../../styles/mixins';
+
+.recent-wrapper {
+	overflow: hidden;
+	@include wrapper(lightgoldenrodyellow);
+}
+
+.recent-calculation {
+	width: 100%;
+	font-weight: regular;
+	padding: 20px 60px;
+	border: 1px solid black;
+	@include center(center);
+}

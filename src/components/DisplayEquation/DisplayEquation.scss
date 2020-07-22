@@ -1,0 +1,7 @@
+@import '../../styles/mixins';
+
+.equation {
+	color: grey;
+	font-size: 1.4em;
+	@include center(flex-end);
+}

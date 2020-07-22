@@ -1,0 +1,5 @@
+@import '../../styles/_mixins.scss';
+
+.clear-btn {
+	@include buttonStyle(50px, gray, normal);
+}

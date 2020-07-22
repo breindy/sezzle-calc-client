@@ -1,0 +1,28 @@
+@mixin center($justify-content) {
+	display: flex;
+	justify-content: $justify-content;
+	align-items: center;
+}
+
+@mixin wrapper($background-color) {
+	width: 400px;
+	height: 610px;
+	background-color: $background-color;
+}
+
+@mixin buttonStyle($border-radius, $background-color, $font-weight) {
+	flex: 1;
+	cursor: pointer;
+	margin: 1%;
+	@include defaultEltStyle(center, $font-weight, $background-color, $border-radius);
+}
+
+@mixin defaultEltStyle($justify-content, $font-weight, $background-color, $border-radius) {
+	height: 4em;
+	font-weight: $font-weight;
+	font-size: 1.4em;
+	background-color: $background-color;
+	color: white;
+	border-radius: $border-radius;
+	@include center($justify-content);
+}

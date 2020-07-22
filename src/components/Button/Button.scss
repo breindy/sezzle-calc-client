@@ -1,0 +1,11 @@
+@import '../../styles/_mixins.scss';
+
+.button-wrapper {
+	@include buttonStyle(50%, slategray, regular);
+	@include center(center);
+}
+
+.operator {
+	background-color: #fe9241;
+	color: white;
+}
