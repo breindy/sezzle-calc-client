@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import useSync from 'react-use-sync';
 import './App.scss';
 
 import Button from './components/Button/Button';
@@ -15,17 +14,16 @@ const App = () => {
 	const [ previousExpr, setPreviousExpr ] = useState('');
 	const [ currentExpr, setCurrentExpr ] = useState('');
 	const [ operator, setOperator ] = useState(undefined);
-	const [ recent, setRecent ] = useSync('recent', useState([]));
-
+	const [ recent, setRecent ] = useState([]);
 	useEffect(() => {
 		getRecentData();
-	});
+	}, []);
 
 	useEffect(
 		() => {
 			if (isEvaluated) {
 				//save input and equation to DB
-				fetch('https://hidden-wave-54655.herokuapp.com/insert', {
+				fetch('/insert', {
 					headers: {
 						'Content-type': 'application/json'
 					},
@@ -36,23 +34,46 @@ const App = () => {
 						calculation: equation + ' = ' + input
 					})
 				})
-					.then((response) => response.json())
-					.then((data) => data['data'])
-					.then(getRecentData);
+					.then(handleError)
+					.catch((error) => {
+						console.log(error);
+					});
 			}
-			setEquation('');
+
 			setIsEvaluated(false);
+			setEquation('');
 			handleClear();
 		},
 		[ isEvaluated ]
 	);
 
-	const getRecentData = () => {
-		fetch('https://hidden-wave-54655.herokuapp.com/recent')
-			.then((res) => res.json())
-			.then((recentData) => recentData.data)
-			.then((recent) => setRecent(recent));
+	useEffect(
+		() => {
+			getRecentData();
+		},
+		[ recent ]
+	);
+
+	const handleError = (response) => {
+		if (!response.ok) {
+			throw Error(`${response.status} - ${response.statusText}`);
+		}
+		return response;
 	};
+
+	const getRecentData = async () => {
+		try {
+			let result = await fetch('/recent');
+			let recentData = await result.json();
+			setRecent(recentData.data);
+		} catch (e) {
+			console.log(e);
+		}
+	};
+
+	/*
+		Calculator Operations
+	*/
 
 	const addZero = (val) => {
 		if (input == '') {
@@ -61,7 +82,7 @@ const App = () => {
 		}
 		if (input !== '') {
 			setInput((prevInput) => prevInput + val);
-			setEquation((prevEquation) => prevEquation + val);
+			updateDisplay(val);
 		}
 		if (input == '0') {
 			setInput(val);
@@ -72,7 +93,7 @@ const App = () => {
 	const addDecimal = (val) => {
 		if (input.indexOf('.') === -1) {
 			setInput((prevInput) => prevInput + val);
-			setEquation((prevEquation) => prevEquation + val);
+			updateDisplay(val);
 		}
 		if (input == '') {
 			setInput('0' + val);
@@ -125,8 +146,8 @@ const App = () => {
 		setIsEvaluated(true);
 	};
 
-	const updateDisplay = (number) => {
-		setEquation((prevEquation) => prevEquation + number);
+	const updateDisplay = (element) => {
+		setEquation((prevEquation) => prevEquation + element);
 	};
 
 	return (
@@ -140,24 +161,28 @@ const App = () => {
 					<Button handleClick={addToInput}>9</Button>
 					<Button handleClick={chooseOperator}>/</Button>
 				</div>
+
 				<div className="row">
 					<Button handleClick={addToInput}>4</Button>
 					<Button handleClick={addToInput}>5</Button>
 					<Button handleClick={addToInput}>6</Button>
 					<Button handleClick={chooseOperator}>*</Button>
 				</div>
+
 				<div className="row">
 					<Button handleClick={addToInput}>1</Button>
 					<Button handleClick={addToInput}>2</Button>
 					<Button handleClick={addToInput}>3</Button>
 					<Button handleClick={chooseOperator}>+</Button>
 				</div>
+
 				<div className="row">
 					<Button handleClick={addDecimal}>.</Button>
 					<Button handleClick={addZero}>0</Button>
 					<Button handleClick={evaluate}>=</Button>
 					<Button handleClick={chooseOperator}>-</Button>
 				</div>
+
 				<div className="row">
 					<ClearButton handleClear={handleClear}>Clear</ClearButton>
 				</div>
