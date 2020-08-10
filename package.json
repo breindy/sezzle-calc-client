@@ -19,7 +19,6 @@
 		"test": "react-scripts test",
 		"eject": "react-scripts eject"
 	},
-	"proxy": "https://hidden-wave-54655.herokuapp.com/",
 	"eslintConfig": {
 		"extends": "react-app"
 	},
