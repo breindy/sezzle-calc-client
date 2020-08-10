@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.f24d4018382266c8825bbbf2ee1562d4.js"
+  "/precache-manifest.d3a848dc0207ed8a3d24890521b09ab0.js"
 );
 
 self.addEventListener('message', (event) => {
@@ -36,11 +36,4 @@ workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 workbox.routing.registerNavigationRoute(workbox.precaching.getCacheKeyForURL("/index.html"), {
   
   blacklist: [/^\/_/,/\/[^/?]+\.[^/]+$/],
-});
-self.addEventListener('fetch', (e) => {
-	console.log(`intercepting ${e.request.method} to ${e.request.url}`);
-});
-
-self.addEventListener('message', () => {
-	console.log('just received from client that state has been updated!');
 });

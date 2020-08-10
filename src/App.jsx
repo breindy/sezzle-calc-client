@@ -23,7 +23,7 @@ const App = () => {
 		() => {
 			if (isEvaluated) {
 				//save input and equation to DB
-				fetch('/insert', {
+				fetch('https://hidden-wave-54655.herokuapp.com/insert', {
 					headers: {
 						'Content-type': 'application/json'
 					},
@@ -63,7 +63,7 @@ const App = () => {
 
 	const getRecentData = async () => {
 		try {
-			let result = await fetch('/recent');
+			let result = await fetch('https://hidden-wave-54655.herokuapp.com/recent');
 			let recentData = await result.json();
 			setRecent(recentData.data);
 		} catch (e) {
